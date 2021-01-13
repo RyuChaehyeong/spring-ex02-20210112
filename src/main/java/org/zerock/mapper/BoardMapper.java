@@ -7,6 +7,19 @@ import org.zerock.domain.BoardVO;
 
 public interface BoardMapper {
 	
-	@Select("select * from tbl_board where bno > 0")
+	//@Select("select * from tbl_board where bno > 0") -- BoardMapper.xml에 작성
 	public List<BoardVO> getList();
+	
+	public void insert(BoardVO board);
+	
+	public void insertSelectKey(BoardVO board);
+	//1. seq_board의 nextval을 먼저 조회
+	//2. 조회된 nextval을 insert 때 사용
+	
+	public BoardVO read(Long bno);
+	
+	public int delete(Long bno); //delete한 행의 개수
+	
+	public int update(BoardVO board); //update한 행의 개수
+	
 }
