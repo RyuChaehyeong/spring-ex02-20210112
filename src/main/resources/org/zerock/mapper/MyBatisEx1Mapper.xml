@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.mapper.MyBatisEx1Mapper">
+	<select id="select1" resultType="int">
+<![CDATA[
+		select * from tbl_board 
+]]>		
+		<if test="bno != 0">
+			where bno = #{bno}
+		</if>
+	</select>	
+
+	<select id="select2" resultType="int">
+		select * from tbl_board
+		
+		<if test="type == 'title'">
+			where title = #{keyword}
+		</if>
+		<if test="type == 'content'">
+			where content = #{keyword}
+		</if>
+		<if test="type eq 'writer'">
+			where writer = #{keyword}
+		</if>
+	</select>
+	
+	<select id="select3" resultType="int">
+		select * from tbl_board
+		
+		<!-- 작은 따옴표 안에 한글자이면 char로 인식해서 String으로 만들려고 toString 메소드를 한번 더 써줌 -->
+		<!-- String 끼리 연결하는 방법은 ||를 써준다. -->
+		<if test="type == 'T'.toString()">
+			where title LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="type == 'C'.toString()">
+			where content LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="type == 'W'.toString()">
+			where writer LIKE '%' || #{keyword} || '%'
+		</if>
+	</select>
+	
+	<select id="select4" resultType="int">
+		select * from tbl_board
+		where
+		
+		<choose>
+			<when test="type == 'title'">
+				title LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="type == 'content'">
+				content LIKE '%' || #{keyword} || '%'			
+			</when>
+			<when test="type == 'writer'">
+				writer LIKE '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				bno > 0
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- choose에 뭐 나올때만 where절 붙이고 싶을 때 where 태그로 감싸면 된다.  -->
+	<select id="select5" resultType="int">
+		select * from tbl_board
+		<where>
+			<choose>
+				<when test="type == 'title'">
+					title = #{keyword}
+				</when>
+				<when test="type == 'content'">
+					content = #{keyword}
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	
+	<!-- mapperTests에서 cri.getList()로 얻은 것이 collection="mylist"로 들어간다. 
+	property명이 collection에 들어감
+	-->
+	<select id="select6" resultType="int">
+		select * from tbl_board	
+		<foreach item="myitem" collection="mylist">
+			#{myitem},
+		</foreach>
+	</select>
+	
+	<!-- key는 index로 value는 item으로 -->
+	<select id="select7" resultType="int">
+		select * from tbl_board
+		<foreach item="myval" index="myidx" collection="mymap">
+			(#{myidx}, #{myval}) ,
+		</foreach>
+	</select>
+	
+	<!-- 반복해서 들어가는 것을 trim태그 안에 넣어주기 앞은 prefix에 뒤는 suffix에다가 ,,
+	아래 예시에서는 and가 반복됨 -->
+	<select id="select8" resultType="int">
+		SELECT * FROM tbl_board
+		<foreach item="item" collection="mylist">
+			<trim suffix="AND">
+				#{item}
+			</trim>
+		</foreach>
+	</select>
+	
+	<!-- 마지막에 발견된거 override,, overrid는 그냥 지운다는 얘기  -->
+	<select id="select9" resultType="int">
+		SELECT * FROM tbl_board
+		<trim suffixOverrides="AND">
+			<foreach item="item" collection="mylist">
+				<trim suffix="AND">
+					#{item}
+				</trim>
+			</foreach>
+		</trim>
+	</select>
+</mapper>
+
+
+
+

@@ -164,4 +164,16 @@ public class BoardControllerTests {
 		assertEquals("success", result.getFlashMap().get("result"));
 	}
 	
+	@Test
+	public void testListPaging() throws Exception {
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+				.param("pageNum", "2")
+				.param("amount", "10"))
+				.andReturn();
+		
+		Map<String, Object> model = result.getModelAndView().getModel();
+		List list = (List) model.get("list");
+		
+		assertEquals(10, list.size());
+	}
 }

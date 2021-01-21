@@ -4,11 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 public interface BoardMapper {
 	
+	public int getTotalCount(Criteria cri);
+	
 	//@Select("select * from tbl_board where bno > 0") -- BoardMapper.xml에 작성
 	public List<BoardVO> getList();
+	
+	public List<BoardVO> getListWithPaging(Criteria cri);
 	
 	public void insert(BoardVO board);
 	
@@ -21,5 +26,7 @@ public interface BoardMapper {
 	public int delete(Long bno); //delete한 행의 개수
 	
 	public int update(BoardVO board); //update한 행의 개수
+
+
 	
 }
