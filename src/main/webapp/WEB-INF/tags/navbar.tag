@@ -29,7 +29,24 @@
         <a class="nav-link" href="${registerLink}">글쓰기</a>
       </li>
     </ul>
+    
+    <form action="/board/list" id="searchForm" class="form-inline my-2 my-lg-0">
+	    <select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+		    <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } selected>제목</option>
+		    <option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+		    <option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+		    <option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+		    <option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+		    <option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>	   
+	 	</select>
+	    <input name="keyword" required value="${pageMaker.cri.keyword}" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+	    <input type="hidden" name="pageNum" value="1">
+	    <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+	    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    
   </div>
+  
 </nav>
 
 </div>
