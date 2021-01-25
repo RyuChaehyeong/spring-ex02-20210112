@@ -85,6 +85,8 @@ public class BoarderController {
 		log.info(cri);
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		//그냥 addAttr은 쿼리스트링으로 붙음
 		
 		//여기서 redirect를 해주었기 때문에 model에 cri를 넣으면 안된다.
@@ -99,6 +101,8 @@ public class BoarderController {
 		}
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		return "redirect:/board/list";
 	}
 	

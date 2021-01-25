@@ -25,10 +25,11 @@
 		
 		//checkModal(result);
 		checkModal2(message);
+		
 		history.replaceState({}, null, null);
 		
 		function checkModal2(message) {
-			if(message && history.state == null) {
+			if (message && history.state == null) {
 				$("#myModal .modal-body p").html(message);
 				$("#myModal").modal("show");
 			}
@@ -40,7 +41,8 @@
 			}
 			
 			if (parseInt(result) > 0) {
-				$("#myModal .modal-body p").html("게시글 " + result + "번이 등록되었습니다.")
+				$("#myModal .modal-body p")
+ 				 .html("게시글 " + result + "번이 등록되었습니다.");
 			}
 			$("#myModal").modal("show");
 		}
@@ -56,55 +58,56 @@
 	});
 </script>
 
-<title>유채형 게시판</title>
+<title>Insert title here</title>
 </head>
-
 <body>
 
 <u:navbar></u:navbar>
+
 <div class="container-sm">
+
   <div class="row">
+
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th>#bno</th>
-          <th>title</th>
-          <th>writer</th>
-          <th>regdate</th>
-          <th>moddate</th>
+          <th>#번호</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>작성일</th>
+          <th>수정일</th>
         </tr>
       </thead>
       <tbody>
-       <c:forEach items="${list }" var="board">
-        <tr>
-          <td>${board.bno}</td>
-          <td>
-          
-          <c:url value="/board/get" var="boardLink">
-          	<c:param value="${board.bno }" name="bno"/>
-          	<c:param value="${pageMaker.cri.pageNum }" name="pageNum"/>
-          	<c:param value="${pageMaker.cri.amount }" name="amount"/>
-          </c:url>
-          
-          <a href="${boardLink }">
-	          <c:out value="${board.title}"/>
-          </a>
-          </td>
-          <td><c:out value="${board.writer}"/></td>
-          <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}"/></td>
-          <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}"/></td>
-
-        </tr>
-       </c:forEach>
-     
+        <c:forEach items="${list}" var="board" >
+          <tr>
+            <td>${board.bno}</td>
+            <td>
+            <c:url value="/board/get" var="boardLink">
+            	<c:param value="${board.bno }" name="bno" />
+            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+            	<c:param value="${pageMaker.cri.amount }" name="amount" />
+            	<c:param value="${pageMaker.cri.type }" name="type"	/>
+            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
+            </c:url>
+            
+            <a href="${boardLink }">
+	            <c:out value="${board.title}" />
+            </a>
+            
+            </td>
+            <td><c:out value="${board.writer}" /></td>
+            <td><fmt:formatDate pattern="yyyy-MM-dd" 
+              value="${board.regdate}" /></td>
+            <td><fmt:formatDate pattern="yyyy-MM-dd"
+              value="${board.updateDate}" /></td>
+          </tr>
+        </c:forEach>
       </tbody>
     </table>
-
-
   </div>
 </div>
 
-<!-- modal -->
 <div id="myModal" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -118,21 +121,23 @@
         <p>처리가 완료되었습니다.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container-sm mt-5">
+<div class="container-sm mt-3">
 	<div class="row justify-content-center">
 		<nav aria-label="Page navigation example">
 		  <ul class="pagination">
-		  	
+		  
 		  	<c:if test="${pageMaker.prev }">
-				<c:url value="/board/list" var="prevLink">
+		  		<c:url value="/board/list" var="prevLink">
 		  			<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
 		  			<c:param value="${pageMaker.cri.amount }" name="amount" />
+		  			<c:param name="type" value="${pageMaker.cri.type }"/>
+		    		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>
 		  		</c:url>
 			    <li class="page-item">
 			    <%-- <a class="page-link" href="${prevLink }">Previous</a> --%>
@@ -140,26 +145,30 @@
 			    </li>
 		  	</c:if>
 		    
-		    <c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-		  		 <c:url value="/board/list" var="pageLink" >
+		    <c:forEach var="num" begin="${pageMaker.startPage }"
+		    					 end="${pageMaker.endPage }">
+		    	<c:url value="/board/list" var="pageLink" >
 		    		<c:param name="pageNum" value="${num }" />
 		    		<c:param name="amount" value="${pageMaker.cri.amount }" />
+		    		<c:param name="type" value="${pageMaker.cri.type }"/>
+		    		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>
 		    	</c:url>
-			   	
-			    <li class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
-			    <%-- <a class="page-link" href="${pageLink }">${num }</a>--%>
-			    <a class="page-link" href="${num }">${num }</a>
-			    </li>
+		    	<li class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
+		    	<%-- <a class="page-link" href="${pageLink }">${num }</a> --%>
+		    	<a class="page-link" href="${num }">${num }</a>
+		    	</li>
 		    </c:forEach>
 		    
 		    <c:if test="${pageMaker.next }">
-			    <c:url value="/board/list" var="nextLink">
-			    	<c:param name="pageNum" value="${pageMaker.endPage +1 }"/>
-			    	<c:param name="amount" value="${pageMaker.cri.amount }"/>
-			    </c:url>
+		    	<c:url value="/board/list" var="nextLink">
+		    		<c:param name="pageNum" value="${pageMaker.endPage +1 }"/>
+		    		<c:param name="amount" value="${pageMaker.cri.amount }" />
+		    		<c:param name="type" value="${pageMaker.cri.type }"/>
+		    		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>
+		    	</c:url>
 			    <li class="page-item">
-			  	  <%-- <a class="page-link" href="${nextLink }">Next</a>--%>
-			  	  <a class="page-link" href="${pageMaker.endPage +1}">Next</a>
+			    	<%-- <a class="page-link" href="${nextLink }">Next</a> --%>
+		    		<a class="page-link" href="${pageMaker.endPage +1 }">Next</a>
 			    </li>
 		    </c:if>
 		  </ul>
@@ -168,11 +177,14 @@
 </div>
 
 <div class="d-none">
-	<form id="actionForm" action="${root }/board/list">
-		<input name="pageNum" value="${pageMaker.cri.pageNum }"/>
+	<form id="actionForm" action="${root }/board/list" >
+		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
 		<input name="amount" value="${pageMaker.cri.amount }"/>
-		<input type="submit"/>
+		<input name="type" value="${pageMaker.cri.type }" />
+		<input name="keyword" value="${pageMaker.cri.keyword }" />
+		<input type="submit" />
 	</form>
 </div>
+
 </body>
 </html>
