@@ -15,7 +15,9 @@
 	</select>
 	
 	<update id="update">
-		UPDATE tbl_reply set reply = #{reply}, updatedate=sysdate where rno = #{rno}
+		UPDATE tbl_reply 
+		set reply = #{reply}, updatedate = sysdate, replyer = #{replyer} 
+		where rno = #{rno}
 	</update>
 	
 	<delete id="delete">
